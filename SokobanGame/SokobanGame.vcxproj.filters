@@ -8,7 +8,7 @@
     <Filter Include="Main">
       <UniqueIdentifier>{7d2dd49a-45ad-4f8a-9a1f-58821b05f583}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game">
+    <Filter Include="Framework">
       <UniqueIdentifier>{797a5389-9451-4ddc-bd07-09a0a2af5f8f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -20,7 +20,13 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="Framework\Game.c">
-      <Filter>Game</Filter>
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Renderer.c">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Input.c">
+      <Filter>Framework</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -28,7 +34,13 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="Framework\Game.h">
-      <Filter>Game</Filter>
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Renderer.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Input.h">
+      <Filter>Framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

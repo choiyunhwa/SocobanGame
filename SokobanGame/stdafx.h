@@ -12,3 +12,4 @@
 #include <stdint.h>
 #include <stdbool.h> //논리개수를 저장하는 타입 0 - false / !0 - true
 
+#include <Windows.h>
