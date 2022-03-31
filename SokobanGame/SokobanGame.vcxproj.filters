@@ -8,10 +8,27 @@
     <Filter Include="Main">
       <UniqueIdentifier>{7d2dd49a-45ad-4f8a-9a1f-58821b05f583}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{797a5389-9451-4ddc-bd07-09a0a2af5f8f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="stdafx.c">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Framework\Game.c">
+      <Filter>Game</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Framework\Game.h">
+      <Filter>Game</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
