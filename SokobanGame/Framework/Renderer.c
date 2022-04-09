@@ -1,9 +1,6 @@
 #include "stdafx.h"
 #include "Renderer.h"
 
-#define MAP_SIZE 24
-
-
 static char s_map[MAP_SIZE][MAP_SIZE]; //인터널로 쓰기 때문에
 static HANDLE s_consoleHandle; //HANDLE 재정의된 타입
 
