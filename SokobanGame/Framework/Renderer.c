@@ -4,7 +4,6 @@
 #define MAP_SIZE 24
 
 
-<<<<<<< HEAD
 static char s_map[MAP_SIZE][MAP_SIZE]; //인터널로 쓰기 때문에
 static HANDLE s_consoleHandle; //HANDLE 재정의된 타입
 
@@ -18,20 +17,10 @@ void clear() // 다 공백으로 주고 마지막만 NULL문자를 줌
 	}
 }
 
-=======
-static char s_map[MAP_SIZE][MAP_SIZE] //인터널로 쓰기 때문에
-= { { "********"},
-	{"*sokoban*"},
-	{"********"} 
-	};
-
-static HANDLE s_consoleHandle; //HANDLE 재정의된 타입
-
->>>>>>> 3661dc3f939b9193fbdaacf619802dc4901c6137
 bool InitializeRenderer()
 {
 	s_consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); //콘솔핸들을 가지고 옴
-	
+
 	if (INVALID_HANDLE_VALUE == s_consoleHandle) //예외처리
 	{
 		return false;
@@ -53,10 +42,17 @@ void RenderMap()
 	const static COORD initialPos = { 0, 0 }; //콘솔 커서 포지션의 시작시점
 	const static CONSOLE_CURSOR_INFO info = { 100,false }; //렌더를 할때마다 CURSOR_INFO함
 
-	SetConsoleCursorPosition (s_consoleHandle, initialPos);
-	SetConsoleCursorInfo (s_consoleHandle, &info);
+	SetConsoleCursorPosition(s_consoleHandle, initialPos);
+	SetConsoleCursorInfo(s_consoleHandle, &info);
 
-<<<<<<< HEAD
+	//DeltaTime 사용하기
+	//sprintf_s(s_map[0], sizeof(s_map[0]), "Delta TIme : %.6f", GetDeltaTime());
+	//sprintf_s(s_map[1], sizeof(s_map[1]), "FPS : %d", (int32_t)(1/GetDeltaTime()));
+
+	//시간 흐르는 상황
+	//clock_t tick = clock();
+	//sprintf_s(s_map[0], sizeof(s_map[0]), "Elapsed TIme : %d", tick);
+
 	for (size_t i = 0; i < MAP_SIZE; ++i)
 	{
 		puts(s_map[i]); //1차원 배열은 char pointer로 퇴행이 되어 puts으로 전달할 수 있음
@@ -66,13 +62,7 @@ void RenderMap()
 	clear();
 }
 
-void SetKeyMessage(int32_t keyCode)
+void SetMessage(const char *messge)
 {
-	sprintf_s(s_map[0], sizeof(s_map[0]),"%c키가 눌림", keyCode); //첫번째 배열에 해당 값을 출력함
-=======
-	for (int i = 0; i < MAP_SIZE; ++i)
-	{
-		puts(s_map[i]); //1차원 배열은 char pointer로 퇴행이 되어 puts으로 전달할 수 있음
-	}
->>>>>>> 3661dc3f939b9193fbdaacf619802dc4901c6137
+	strcpy(s_map[0],MAP_SIZE, messge);
 }

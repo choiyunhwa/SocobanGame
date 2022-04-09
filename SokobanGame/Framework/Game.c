@@ -1,10 +1,8 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "Renderer.h"
-<<<<<<< HEAD
 #include "Input.h"
-=======
->>>>>>> 3661dc3f939b9193fbdaacf619802dc4901c6137
+#include "Timer.h"
 
 bool Initialize()
 {
@@ -12,6 +10,9 @@ bool Initialize()
 	{
 		return false;
 	}
+
+	InitializeTimer();
+
 	return true;
 }
 
@@ -22,22 +23,20 @@ void processInput()
 
 void update()
 {
-	if (GetButton(KEYCODE_W))
+	/*static float elapsedTime = 0.0f;
+	static bool canShowMessage = false;
+
+	elapsedTime += GetDeltaTime();
+
+	if (elapsedTime > 0.5f)
 	{
-		SetKeyMessage(KEYCODE_W);
+		elapsedTime = 0.0f;
+		canShowMessage = !canShowMessage;
 	}
-	else if (GetButton(KEYCODE_D))
+	if (canShowMessage)
 	{
-		SetKeyMessage(KEYCODE_D);
-	}
-	else if (GetButton(KEYCODE_S))
-	{
-		SetKeyMessage(KEYCODE_S);
-	}
-	else if (GetButton(KEYCODE_A))
-	{
-		SetKeyMessage(KEYCODE_A);
-	}
+		SetMessage("Â¥ÀÜ");
+	}*/
 }
 
 void render()
@@ -47,9 +46,10 @@ void render()
 
 int32_t Run()
 {
-	
+
 	while (true)
 	{
+		UpdateTimer();
 		//ÀÔ·ÂÃ³¸®
 		processInput();
 
@@ -57,6 +57,7 @@ int32_t Run()
 		update();
 		//·»´õ¸µ
 		render();
+		
 	}
 
 }
