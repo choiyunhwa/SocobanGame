@@ -4,6 +4,21 @@
 #define MAP_SIZE 24
 
 
+<<<<<<< HEAD
+static char s_map[MAP_SIZE][MAP_SIZE]; //인터널로 쓰기 때문에
+static HANDLE s_consoleHandle; //HANDLE 재정의된 타입
+
+void clear() // 다 공백으로 주고 마지막만 NULL문자를 줌
+{
+	memset(s_map, ' ', sizeof(s_map));
+
+	for (size_t i = 0; i < MAP_SIZE; ++i)
+	{
+		s_map[i][MAP_SIZE - 1] = '\0';
+	}
+}
+
+=======
 static char s_map[MAP_SIZE][MAP_SIZE] //인터널로 쓰기 때문에
 = { { "********"},
 	{"*sokoban*"},
@@ -12,6 +27,7 @@ static char s_map[MAP_SIZE][MAP_SIZE] //인터널로 쓰기 때문에
 
 static HANDLE s_consoleHandle; //HANDLE 재정의된 타입
 
+>>>>>>> 3661dc3f939b9193fbdaacf619802dc4901c6137
 bool InitializeRenderer()
 {
 	s_consoleHandle = GetStdHandle(STD_OUTPUT_HANDLE); //콘솔핸들을 가지고 옴
@@ -40,8 +56,23 @@ void RenderMap()
 	SetConsoleCursorPosition (s_consoleHandle, initialPos);
 	SetConsoleCursorInfo (s_consoleHandle, &info);
 
+<<<<<<< HEAD
+	for (size_t i = 0; i < MAP_SIZE; ++i)
+	{
+		puts(s_map[i]); //1차원 배열은 char pointer로 퇴행이 되어 puts으로 전달할 수 있음
+	}
+
+	//출력 후에 현재 프레임을 지움
+	clear();
+}
+
+void SetKeyMessage(int32_t keyCode)
+{
+	sprintf_s(s_map[0], sizeof(s_map[0]),"%c키가 눌림", keyCode); //첫번째 배열에 해당 값을 출력함
+=======
 	for (int i = 0; i < MAP_SIZE; ++i)
 	{
 		puts(s_map[i]); //1차원 배열은 char pointer로 퇴행이 되어 puts으로 전달할 수 있음
 	}
+>>>>>>> 3661dc3f939b9193fbdaacf619802dc4901c6137
 }
