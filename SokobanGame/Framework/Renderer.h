@@ -16,4 +16,4 @@ void RenderMap();
 
 //void SetKeyMessage(int keyCode);
 
-void SetMessage(const char message[24]);
+//void SetMessage(const char message[24]);

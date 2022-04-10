@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Renderer.h"
+#include "Game/Stage.h"
 
 static char s_map[MAP_SIZE][MAP_SIZE]; //인터널로 쓰기 때문에
 static HANDLE s_consoleHandle; //HANDLE 재정의된 타입
@@ -42,6 +43,10 @@ void RenderMap()
 	SetConsoleCursorPosition(s_consoleHandle, initialPos);
 	SetConsoleCursorInfo(s_consoleHandle, &info);
 
+	const char** stage = GetMap(); //stage에 맵을 가지고옴
+
+	memcpy(s_map, stage, sizeof(s_map));
+
 	//DeltaTime 사용하기
 	//sprintf_s(s_map[0], sizeof(s_map[0]), "Delta TIme : %.6f", GetDeltaTime());
 	//sprintf_s(s_map[1], sizeof(s_map[1]), "FPS : %d", (int32_t)(1/GetDeltaTime()));
@@ -59,7 +64,7 @@ void RenderMap()
 	clear();
 }
 
-void SetMessage(const char *messge)
-{
-	strcpy(s_map[0],MAP_SIZE, messge);
-}
+//void SetMessage(const char *messge)
+//{
+//	strcpy_s(s_map[0],MAP_SIZE, messge);
+//}

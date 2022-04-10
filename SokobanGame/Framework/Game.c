@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Input.h"
 #include "Timer.h"
+#include "Game/Stage.h"
 
 bool Initialize()
 {
@@ -13,12 +14,15 @@ bool Initialize()
 
 	InitializeTimer();
 
+	LoadStage(STAGE_01);
+
 	return true;
 }
 
 void processInput()
 {
-	UpdateInput(); // 키의 상태 값을 반환한다.
+	//UpdateInput(); // 키의 상태 값을 반환한다.
+	UpdateStage();
 }
 
 void update()
