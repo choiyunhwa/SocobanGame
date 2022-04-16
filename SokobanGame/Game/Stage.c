@@ -1,21 +1,38 @@
 #include "stdafx.h"
 #include "Stage.h"
-
+#include "Player.h"
+#include "../Framework/input.h"
 
 static char s_map[MAP_SIZE][MAP_SIZE];
-static int32_t s_goalCount = 0; //목표 개수
-static int32_t s_boxOnGoalCount = 0; //현재 맞는 개수
-static int32_t s_playerX = 0; //player의 x 위치
-static int32_t s_playerY = 0; //player의 y 위치
+static int32_t s_goalCount = 0;
+static int32_t s_boxOnGoalCount = 0;
+static int32_t s_playerX = 0;
+static int32_t s_playerY = 0;
+static EStageLevel s_currentLevel = 0;
 
 bool parseMapType(int i, int j, char mapType)
 {
+	if (mapType == '\n' || mapType == '\0')
+	{
+		return false;
+	}
+
+	s_map[i][j] = mapType;
+
 	switch (mapType)
 	{
-		//각 맵타입별로 해줘야 하는일
-		s_map[i][j] = ch; // Map에 저장
+	case MAPTYPE_PLAYER:
+		s_playerX = j;
+		s_playerY = i;
+		break;
+	case MAPTYPE_GOAL:
+		s_goalCount++;
+		break;
+	case MAPTYPE_BOX_ON_GOAL:
+		s_goalCount++;
+		s_boxOnGoalCount++;
+		break;
 	}
-	//반환은 행에 다다랐을때
 }
 
 void clearStage()
@@ -34,52 +51,106 @@ void clearStage()
 void LoadStage(EStageLevel level)
 {
 	assert(STAGE_01 <= level && level < STAGE_MAX);
+	s_currentLevel = level;
 
-	static char path[MAX_PATH] = { 0 }; //파일 경로 MAX_PATH까지만 작성이 가능
-
+	static char path[MAX_PATH] = { 0 };
 	sprintf_s(path, sizeof(path), "Stage/Stage%02d.txt", (int32_t)level);
+
 
 	FILE* fp = NULL;
 	fopen_s(&fp, path, "r");
 	assert(fp != NULL);
 
-	clearStage(); //데이터를 받아오기 전 clear해줌
+	clearStage();
+
 
 	for (size_t i = 0; i < MAP_SIZE; ++i)
 	{
-		for (size_t j= 0; j < MAP_SIZE; ++j)
+		for (size_t j = 0; j < MAP_SIZE; ++j)
 		{
 			char ch = fgetc(fp);
 
-			if (false == parseMapType(i,j,ch))
-			{
-				break; //false가 나오면 행이 끝남
-			}
-
-			if (ch == '\n')
+			if (false == parseMapType(i, j, ch))
 			{
 				break;
 			}
 		}
-		if (feof(fp)) //fgetc가 끝나면 EOF를 반환하므로 EOF인 경우 끝냄
+
+		if (feof(fp))
 		{
 			break;
 		}
-		//stage로 한줄 씩파일을 읽어오지만 끝에 \n이 붙어 다른것으로 대체
-		//fgets(s_map[i], sizeof(s_map[i]), fp);
 	}
+
 	fclose(fp);
+}
+
+//플레이어 움직이기 
+void PlayerMove(int x, int y)
+{
+	s_map[s_playerY][s_playerX] = MAPTYPE_PATH;
+	s_playerX += x;
+	s_playerY += y;
+	s_map[s_playerY][s_playerX] = MAPTYPE_PLAYER;
 }
 
 void UpdateStage()
 {
-	//입력에 대해서 처리를 함(wasd 업데이트)
-	//게임이 클리어 됐는지 파악함
-	//게임 로직
+	if (GetButtonDown(KEYCODE_W))
+	{
+		PlayerExcoption(0, -1);
+	}
+	else if (GetButtonDown(KEYCODE_S))
+	{
+		PlayerExcoption(0, 1);
+	}
+	else if (GetButtonDown(KEYCODE_A))
+	{
+		PlayerExcoption(-1, 0);
+	}
+	else if (GetButtonDown(KEYCODE_D))
+	{
+		PlayerExcoption(1, 0);
+	}
+}
+
+//플레이어 예외처리
+void PlayerExcoption(int x, int y)
+{
+	char orginMap = s_map[s_playerY][s_playerX];
+	char nextMap = s_map[s_playerY + y][s_playerX + x];
+	char nextBox = s_map[s_playerY + y * 2][s_playerX + x * 2];
+
+	//1. 플레이어가 다른 장애물을 만났을때 안움직이는 코드
+	/*if (nextMap == MAPTYPE_WALL|| nextMap == MAPTYPE_GOAL|| nextMap == MAPTYPE_BOX)
+	{
+		return false;
+	}
+	PlayerMove(x, y);*/
+
+	//2. 플레이어가 박스를 만났을때 박스가 움직임
+	//왜ㅐㅐㅐ 플레이어가 박스를 씹어먹지ㅜㅜㅜ
+	if (nextMap == MAPTYPE_WALL || nextMap == MAPTYPE_GOAL)
+	{
+		return false;
+	}
+	if (nextMap == MAPTYPE_BOX)
+	{
+		if (nextBox == MAPTYPE_PATH)
+		{
+			nextMap = MAPTYPE_PATH;
+			nextBox = MAPTYPE_BOX;
+		}
+
+	}
+	else
+	{
+		PlayerMove(x, y);
+	}
 
 }
 
 const char** GetMap()
 {
-	return  s_map;
+	return s_map;
 }

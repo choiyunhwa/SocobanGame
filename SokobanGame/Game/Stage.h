@@ -1,9 +1,6 @@
 #pragma once
-
-// 역할 
-// 1. 스테이지를 불러옴
-// 2. 스테이지 현재 상황을 보관
-// 3. 스테이지가 클리어 됐는지 ( 박스가 모두 들어갔을 때 )
+#include "Framework/Input.h"
+#include "stdafx.h"
 
 typedef enum MapType
 {
@@ -15,15 +12,23 @@ typedef enum MapType
 	MAPTYPE_PATH = ' '
 } EMapType;
 
-typedef enum StageLevel1
+typedef enum StageLevel
 {
 	STAGE_01 = 1,
+	STAGE_02,
+	STAGE_03,
 	STAGE_MAX
 } EStageLevel;
 
+typedef struct Pos
+{
+	int posY;
+	int posX;
+}SPos;
+
 ///<summary>
-///스테이지 로딩한다.
-/// </summary>
+/// 스테이지를 로딩한다.
+///</summary>
 void LoadStage(EStageLevel level);
 
 /// <summary>
@@ -31,7 +36,13 @@ void LoadStage(EStageLevel level);
 /// </summary>
 void UpdateStage();
 
+void PlayerMove(int x, int y);
+
+void PlayerExcoption(int x, int y);
+
+
+
 ///<summary>
-///맵을 반환한다.
-/// </summary>
+/// 맵을 반환한다.
+///</summary>
 const char** GetMap();

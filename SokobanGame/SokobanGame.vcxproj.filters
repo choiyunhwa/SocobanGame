@@ -14,6 +14,9 @@
     <Filter Include="Game">
       <UniqueIdentifier>{98e2d3dc-9488-493a-8d80-d83a3b514105}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{40259e9e-b9ca-4b38-9bbe-bea9a0221a1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -35,6 +38,12 @@
       <Filter>Framework</Filter>
     </ClCompile>
     <ClCompile Include="Game\Stage.c">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Box.c">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Player.c">
       <Filter>Game</Filter>
     </ClCompile>
   </ItemGroup>
@@ -60,5 +69,16 @@
     <ClInclude Include="Macro.h">
       <Filter>Main</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Box.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Player.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Stage\Stage01.txt">
+      <Filter>Stage</Filter>
+    </Text>
   </ItemGroup>
 </Project>
