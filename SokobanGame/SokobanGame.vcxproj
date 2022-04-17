@@ -147,8 +147,6 @@
     <ClCompile Include="Framework\Input.c" />
     <ClCompile Include="Framework\Renderer.c" />
     <ClCompile Include="Framework\Timer.c" />
-    <ClCompile Include="Game\Box.c" />
-    <ClCompile Include="Game\Player.c" />
     <ClCompile Include="Game\Stage.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="stdafx.c">
@@ -161,14 +159,14 @@
     <ClInclude Include="Framework\Input.h" />
     <ClInclude Include="Framework\Renderer.h" />
     <ClInclude Include="Framework\Timer.h" />
-    <ClInclude Include="Game\Box.h" />
-    <ClInclude Include="Game\Player.h" />
     <ClInclude Include="Game\Stage.h" />
     <ClInclude Include="Macro.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Stage\Stage01.txt" />
+    <Text Include="Stage\Stage02.txt" />
+    <Text Include="Stage\Stage03.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Stage.h"
-#include "Player.h"
 #include "../Framework/input.h"
 
 static char s_map[MAP_SIZE][MAP_SIZE];
@@ -50,12 +49,20 @@ void clearStage()
 
 void LoadStage(EStageLevel level)
 {
+	if (level == STAGE_MAX)
+	{
+		//콘솔 화면을 청소
+		system("cls");
+		puts("■■■■■■■■■■■■■");
+		puts("■     GAME OVER       ■");
+		puts("■■■■■■■■■■■■■");
+		exit(1);
+	}
 	assert(STAGE_01 <= level && level < STAGE_MAX);
 	s_currentLevel = level;
 
 	static char path[MAX_PATH] = { 0 };
 	sprintf_s(path, sizeof(path), "Stage/Stage%02d.txt", (int32_t)level);
-
 
 	FILE* fp = NULL;
 	fopen_s(&fp, path, "r");
@@ -98,30 +105,35 @@ void UpdateStage()
 {
 	if (GetButtonDown(KEYCODE_W))
 	{
-		PlayerExcoption(0, -1);
+		PlayerException(0, -1);
 	}
 	else if (GetButtonDown(KEYCODE_S))
 	{
-		PlayerExcoption(0, 1);
+		PlayerException(0, 1);
 	}
 	else if (GetButtonDown(KEYCODE_A))
 	{
-		PlayerExcoption(-1, 0);
+		PlayerException(-1, 0);
 	}
 	else if (GetButtonDown(KEYCODE_D))
 	{
-		PlayerExcoption(1, 0);
+		PlayerException(1, 0);
+	}
+	else if (GetButtonDown(KEYCODE_R))
+	{
+		clearStage();
+		LoadStage(s_currentLevel);
 	}
 }
 
 //플레이어 예외처리
-void PlayerExcoption(int x, int y)
+void PlayerException(int x, int y)
 {
 	char orginMap = s_map[s_playerY][s_playerX];
 	char nextMap = s_map[s_playerY + y][s_playerX + x];
-	char nextBox = s_map[s_playerY + y * 2][s_playerX + x * 2];
+	char TwoNextBox = s_map[s_playerY + (y * 2)][s_playerX + (x * 2)];
 
-	//1. 플레이어가 다른 장애물을 만났을때 안움직이는 코드
+	//1. 플레이어가 다른 장애물을 만났을때 안움직임
 	/*if (nextMap == MAPTYPE_WALL|| nextMap == MAPTYPE_GOAL|| nextMap == MAPTYPE_BOX)
 	{
 		return false;
@@ -129,26 +141,92 @@ void PlayerExcoption(int x, int y)
 	PlayerMove(x, y);*/
 
 	//2. 플레이어가 박스를 만났을때 박스가 움직임
-	//왜ㅐㅐㅐ 플레이어가 박스를 씹어먹지ㅜㅜㅜ
-	if (nextMap == MAPTYPE_WALL || nextMap == MAPTYPE_GOAL)
+	/*if (nextMap == MAPTYPE_WALL || nextMap == MAPTYPE_GOAL)
 	{
 		return false;
 	}
 	if (nextMap == MAPTYPE_BOX)
 	{
-		if (nextBox == MAPTYPE_PATH)
+		if (nextBox == MAPTYPE_BOX)
 		{
-			nextMap = MAPTYPE_PATH;
-			nextBox = MAPTYPE_BOX;
+			s_map[s_playerY + y][s_playerX + x] = MAPTYPE_PLAYER;
+			return;
 		}
+		else
+		{
+			s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX;
+		}
+		PlayerMove(x, y);
+	}
+	else
+	{
+		PlayerMove(x, y);
+	}*/
 
+	//3. 박스 - 벽/ 박스 - 박스/ 박스 - 목표
+	if (nextMap == MAPTYPE_WALL)
+	{
+		return false;
+	}
+	else if (nextMap == MAPTYPE_BOX)
+	{		
+		if (TwoNextBox != MAPTYPE_WALL)
+		{
+			if (TwoNextBox == MAPTYPE_BOX)
+			{
+				s_map[s_playerY + y][s_playerX + x] = MAPTYPE_BOX;
+				return;
+			}
+			else if (TwoNextBox == MAPTYPE_GOAL)
+			{
+				//s_map[s_playerY + y][s_playerX + x] = MAPTYPE_PLAYER;
+				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX_ON_GOAL;
+				s_boxOnGoalCount++;
+			}
+			else
+			{
+				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX;
+			}
+			PlayerMove(x, y);
+		}
+		
+	}
+	else if (nextMap == MAPTYPE_BOX_ON_GOAL)
+	{
+		if (TwoNextBox != MAPTYPE_WALL)
+		{
+			if (TwoNextBox == MAPTYPE_BOX)
+			{
+				s_map[s_playerY + y][s_playerX + x] = MAPTYPE_BOX;
+				return;
+			}
+			else if (TwoNextBox == MAPTYPE_PATH)
+			{
+				s_map[s_playerY][s_playerX] = MAPTYPE_PATH;
+				s_map[s_playerY + y][s_playerX + x] = MAPTYPE_PLAYER;
+				s_boxOnGoalCount--;
+				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX;
+			}
+			else
+			{
+				return;
+			}
+		}
 	}
 	else
 	{
 		PlayerMove(x, y);
 	}
 
+	if (s_goalCount == s_boxOnGoalCount)
+	{
+		LoadStage(++s_currentLevel);
+	}
+
 }
+
+
+
 
 const char** GetMap()
 {

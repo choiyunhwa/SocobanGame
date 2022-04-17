@@ -20,12 +20,6 @@ typedef enum StageLevel
 	STAGE_MAX
 } EStageLevel;
 
-typedef struct Pos
-{
-	int posY;
-	int posX;
-}SPos;
-
 ///<summary>
 /// 스테이지를 로딩한다.
 ///</summary>
@@ -38,7 +32,7 @@ void UpdateStage();
 
 void PlayerMove(int x, int y);
 
-void PlayerExcoption(int x, int y);
+void PlayerException(int x, int y);
 
 
 
