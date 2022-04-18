@@ -8,6 +8,7 @@ static int32_t s_boxOnGoalCount = 0;
 static int32_t s_playerX = 0;
 static int32_t s_playerY = 0;
 static EStageLevel s_currentLevel = 0;
+static bool Goal = false;
 
 bool parseMapType(int i, int j, char mapType)
 {
@@ -54,7 +55,7 @@ void LoadStage(EStageLevel level)
 		//콘솔 화면을 청소
 		system("cls");
 		puts("■■■■■■■■■■■■■");
-		puts("■     GAME OVER       ■");
+		puts("■     GAME OVER        ■");
 		puts("■■■■■■■■■■■■■");
 		exit(1);
 	}
@@ -95,7 +96,16 @@ void LoadStage(EStageLevel level)
 //플레이어 움직이기 
 void PlayerMove(int x, int y)
 {
-	s_map[s_playerY][s_playerX] = MAPTYPE_PATH;
+	if (Goal == true)
+	{
+		s_map[s_playerY][s_playerX] = MAPTYPE_GOAL;
+		Goal = false;
+	}
+	else
+	{
+		s_map[s_playerY][s_playerX] = MAPTYPE_PATH;
+	}
+
 	s_playerX += x;
 	s_playerY += y;
 	s_map[s_playerY][s_playerX] = MAPTYPE_PLAYER;
@@ -164,12 +174,13 @@ void PlayerException(int x, int y)
 	}*/
 
 	//3. 박스 - 벽/ 박스 - 박스/ 박스 - 목표
+	//(추가 예외)플레이어가 목표 지점을 지나면 목표가 사라짐
 	if (nextMap == MAPTYPE_WALL)
 	{
 		return false;
 	}
 	else if (nextMap == MAPTYPE_BOX)
-	{		
+	{
 		if (TwoNextBox != MAPTYPE_WALL)
 		{
 			if (TwoNextBox == MAPTYPE_BOX)
@@ -183,13 +194,16 @@ void PlayerException(int x, int y)
 				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX_ON_GOAL;
 				s_boxOnGoalCount++;
 			}
+			else if (TwoNextBox == MAPTYPE_BOX_ON_GOAL)
+			{
+				return false;
+			}
 			else
 			{
 				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX;
 			}
 			PlayerMove(x, y);
 		}
-		
 	}
 	else if (nextMap == MAPTYPE_BOX_ON_GOAL)
 	{
@@ -197,8 +211,8 @@ void PlayerException(int x, int y)
 		{
 			if (TwoNextBox == MAPTYPE_BOX)
 			{
-				s_map[s_playerY + y][s_playerX + x] = MAPTYPE_BOX;
-				return;
+				//s_map[s_playerY + y][s_playerX + x] = MAPTYPE_BOX;
+				return false;
 			}
 			else if (TwoNextBox == MAPTYPE_PATH)
 			{
@@ -207,9 +221,31 @@ void PlayerException(int x, int y)
 				s_boxOnGoalCount--;
 				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX;
 			}
+			else if (TwoNextBox == MAPTYPE_GOAL)
+			{
+				s_map[s_playerY][s_playerX] = MAPTYPE_PATH;
+				s_map[s_playerY + y][s_playerX + x] = MAPTYPE_PLAYER;
+				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX_ON_GOAL;
+			}
 			else
 			{
 				return;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else if (nextMap == MAPTYPE_GOAL)
+	{
+		if (TwoNextBox != MAPTYPE_WALL)
+		{
+			if (TwoNextBox == MAPTYPE_BOX_ON_GOAL)
+			{
+				s_map[s_playerY][s_playerX] = MAPTYPE_PATH;
+				s_map[s_playerY + y][s_playerX + x] = MAPTYPE_PLAYER;
+				s_map[s_playerY + (y * 2)][s_playerX + (x * 2)] = MAPTYPE_BOX_ON_GOAL;
 			}
 		}
 	}
@@ -217,16 +253,21 @@ void PlayerException(int x, int y)
 	{
 		PlayerMove(x, y);
 	}
-
+	if (nextMap == MAPTYPE_GOAL)
+	{
+		PlayerMove(x, y);
+		Goal = true;
+	}
+	if (nextMap == MAPTYPE_BOX_ON_GOAL)
+	{
+		PlayerMove(x, y);
+		Goal = true;
+	}
 	if (s_goalCount == s_boxOnGoalCount)
 	{
 		LoadStage(++s_currentLevel);
 	}
-
 }
-
-
-
 
 const char** GetMap()
 {

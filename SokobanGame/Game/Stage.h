@@ -34,8 +34,6 @@ void PlayerMove(int x, int y);
 
 void PlayerException(int x, int y);
 
-
-
 ///<summary>
 /// 맵을 반환한다.
 ///</summary>
