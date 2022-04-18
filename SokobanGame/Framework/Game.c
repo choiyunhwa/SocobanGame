@@ -3,6 +3,7 @@
 #include "Renderer.h"
 #include "Input.h"
 #include "Timer.h"
+#include "../Game/Stage.h"
 
 bool Initialize()
 {
@@ -13,51 +14,38 @@ bool Initialize()
 
 	InitializeTimer();
 
+	LoadStage(STAGE_01);
+
 	return true;
 }
 
 void processInput()
 {
-	UpdateInput(); // 키의 상태 값을 반환한다.
+	//키 입력을 받는 함수
+	UpdateInput();
 }
 
 void update()
 {
-	/*static float elapsedTime = 0.0f;
-	static bool canShowMessage = false;
-
-	elapsedTime += GetDeltaTime();
-
-	if (elapsedTime > 0.5f)
-	{
-		elapsedTime = 0.0f;
-		canShowMessage = !canShowMessage;
-	}
-	if (canShowMessage)
-	{
-		SetMessage("짜잔");
-	}*/
+	//키 입력을 받아 실제 동작하는 스테이지
+	UpdateStage();
 }
 
 void render()
 {
+	//입력받은걸 출력하는 함수
 	RenderMap();
 }
 
 int32_t Run()
 {
-
 	while (true)
 	{
 		UpdateTimer();
-		//입력처리
 		processInput();
-
-		//업데이트
 		update();
-		//렌더링
 		render();
-		
 	}
 
+	return 0;
 }

@@ -11,6 +11,12 @@
     <Filter Include="Framework">
       <UniqueIdentifier>{797a5389-9451-4ddc-bd07-09a0a2af5f8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game">
+      <UniqueIdentifier>{98e2d3dc-9488-493a-8d80-d83a3b514105}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{40259e9e-b9ca-4b38-9bbe-bea9a0221a1c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.c">
@@ -31,6 +37,9 @@
     <ClCompile Include="Framework\Timer.c">
       <Filter>Framework</Filter>
     </ClCompile>
+    <ClCompile Include="Game\Stage.c">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -48,5 +57,22 @@
     <ClInclude Include="Framework\Timer.h">
       <Filter>Framework</Filter>
     </ClInclude>
+    <ClInclude Include="Game\Stage.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Macro.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Stage\Stage01.txt">
+      <Filter>Stage</Filter>
+    </Text>
+    <Text Include="Stage\Stage02.txt">
+      <Filter>Stage</Filter>
+    </Text>
+    <Text Include="Stage\Stage03.txt">
+      <Filter>Stage</Filter>
+    </Text>
   </ItemGroup>
 </Project>
